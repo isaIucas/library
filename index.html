@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library</title>
+</head>
+<body>
+    <div>
+        <form action="">
+            <label name="author">Author:</label><br>
+            <input type="text" name="author" placeholder="Author"><br>
+
+            <label name="title">Title:</label><br>
+            <input type="text" name="title" placeholder="Title"><br>
+
+            <label name="numPages">number of pages:</label><br>
+            <input type="number" name="numPages" placeholder="number of pages"><br>
+
+            <label name="currentStatus">reading Status:</label><br>
+            <select name="currentStatus">
+                <option value="complete">complete</option>
+                <option value="ongoing">ongoing</option>
+                <option value="notstart">notstart</option>
+            </select><br>
+        </form>
+        <button>New Book</button>
+
+
+        <pre class="books">
+        </pre>
+    </div>
+    
+    <script>
+        let myLibrary = [];
+
+        function Book(author, title, pages, read){
+            this.author=author
+            this.title=title
+            this.pages=pages
+            this.read=read
+        }
+
+        function addBookToLibrary(author, title, pages, read){
+            let book = new Book(author, title, pages, read)
+            myLibrary.push(book)
+        }
+
+        function displayAllBooks(books){
+            let totalTitle=""
+            myLibrary.forEach(ele=>{
+                totalTitle+=`${ele.author}\n${ele.title}\n${ele.pages}\n${ele.read}\n`
+            })
+            books.textContent=totalTitle
+        }       
+
+        const button = document.querySelector("button")
+        const books = document.querySelector(".books")
+
+        button.addEventListener("click",(e)=>{
+            var formData = new FormData(document.querySelector('form'))
+            console.log(formData)
+            let pair1=[]
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+                pair1.push(pair[1])
+            }
+            
+            addBookToLibrary(pair1[0], pair1[1], pair1[2], pair1[3])
+
+            displayAllBooks(books)
+
+        })
+
+        
+        displayAllBooks(books)
+    </script>        
+</body>
+</html>
