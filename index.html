@@ -5,41 +5,46 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library</title>
+    <link rel="stylesheet" href="style.css"></link>
 </head>
 <body>
+    <h1>Library</h1>
     <div>
         <form action="">
             <label name="author">Author:</label><br>
-            <input type="text" name="author" placeholder="Author"><br>
+            <input type="text" name="author" placeholder="Author" value="a"><br>
 
             <label name="title">Title:</label><br>
-            <input type="text" name="title" placeholder="Title"><br>
+            <input type="text" name="title" placeholder="Title" value="a"><br>
 
             <label name="numPages">number of pages:</label><br>
-            <input type="number" name="numPages" placeholder="number of pages"><br>
+            <input type="number" name="numPages" placeholder="number of pages" value="2"><br>
 
             <label name="currentStatus">reading Status:</label><br>
             <select name="currentStatus">
-                <option value="complete">complete</option>
-                <option value="ongoing">ongoing</option>
-                <option value="notstart">notstart</option>
+                <option value="reading">reading</option>
+                <option value="not reading">not reading</option>
             </select><br>
         </form>
-        <button>New Book</button>
+        <button class="newBook">New Book</button>
 
 
-        <pre class="books">
-        </pre>
+        </div>
     </div>
+    <div class="libraryCollection">
+
     
     <script>
         let myLibrary = [];
+        let number=0;
 
         function Book(author, title, pages, read){
             this.author=author
             this.title=title
             this.pages=pages
             this.read=read
+            this.number=number
+            number++
         }
 
         function addBookToLibrary(author, title, pages, read){
@@ -47,18 +52,87 @@
             myLibrary.push(book)
         }
 
-        function displayAllBooks(books){
-            let totalTitle=""
-            myLibrary.forEach(ele=>{
-                totalTitle+=`${ele.author}\n${ele.title}\n${ele.pages}\n${ele.read}\n`
+        function displayAllBooks(latestBook){
+            let libraryCollection=document.querySelector(".libraryCollection")
+            let displayBook = document.createElement("div")
+            let displayInfo = document.createElement("div")
+            let displayInfoAtr = document.createAttribute("class")
+            displayInfoAtr.value="displayInfo"
+            displayInfo.setAttributeNode(displayInfoAtr)
+            let displayOption = document.createElement("div")
+            let displayOptionAtr = document.createAttribute("class")
+            displayOptionAtr.value="displayOption"
+            displayOption.setAttributeNode(displayOptionAtr)
+
+            let displayBookAtr = document.createAttribute("class")
+            displayBookAtr.value=`displayBook ${latestBook.number}`
+            displayBook.setAttributeNode(displayBookAtr)
+            let displayBookAuthur = document.createElement("div")
+            displayBookAuthur.textContent=`Author: ${latestBook.author}`
+            let displayBookTitle = document.createElement("div")
+            displayBookTitle.textContent=`Title: ${latestBook.title}`
+            let displayBookPages = document.createElement("div")
+            displayBookPages.textContent=`Pages: ${latestBook.pages}`
+            let displayBookRead = document.createElement("div")
+            displayBookRead.textContent=`Status: ${latestBook.read}`
+            
+
+
+            console.log(myLibrary)
+            let bookRead = document.createElement("button")
+            let bookRemove = document.createElement("button")
+            let bookReadAtr = document.createAttribute("class")
+            bookReadAtr.value="bookRead"
+            let bookRemoveAtr = document.createAttribute("class")
+            bookRemoveAtr.value=`bookRemove ${latestBook.number}`
+            bookRead.textContent="Read"
+            bookRemove.textContent="remove"
+            bookRead.setAttributeNode(bookReadAtr)
+            bookRemove.setAttributeNode(bookRemoveAtr)
+
+            libraryCollection.appendChild(displayBook)
+                displayBook.appendChild(displayInfo)
+                    displayInfo.appendChild(displayBookAuthur)
+                    displayInfo.appendChild(displayBookTitle)
+                    displayInfo.appendChild(displayBookPages)
+                    displayInfo.appendChild(displayBookRead)
+                displayBook.appendChild(displayOption)
+                    displayOption.appendChild(bookRead)
+                    displayOption.appendChild(bookRemove)
+            
+           
+
+            bookRead.addEventListener("click",(e)=>{
+                latestBook.read=(latestBook.read === "reading" ? "not reading" : "reading");
+                displayBookRead.textContent = `Status: ${latestBook.read}`
+                displayOption.appendChild(bookRead)
+                displayOption.appendChild(bookRemove)
             })
-            books.textContent=totalTitle
+
+            bookRemove.addEventListener("click",(e)=>{
+                const myNodelist = document.querySelectorAll(`.displayBook`);
+
+
+                for (let i = 0; i < myNodelist.length; i++) {
+                    myClassNode = myNodelist[i].className.split(" ")[1]
+
+                    if(+myClassNode===latestBook.number){
+                        myNodelist[i].remove();
+                    }
+                }
+                
+
+            })
+
+
+            
         }       
 
-        const button = document.querySelector("button")
+        const button1 = document.querySelector(".newBook")
+
         const books = document.querySelector(".books")
 
-        button.addEventListener("click",(e)=>{
+        button1.addEventListener("click",(e)=>{
             var formData = new FormData(document.querySelector('form'))
             console.log(formData)
             let pair1=[]
@@ -68,13 +142,10 @@
             }
             
             addBookToLibrary(pair1[0], pair1[1], pair1[2], pair1[3])
-
-            displayAllBooks(books)
-
+            displayAllBooks(myLibrary[myLibrary.length-1])
         })
 
-        
-        displayAllBooks(books)
-    </script>        
+
+        </script>        
 </body>
 </html>

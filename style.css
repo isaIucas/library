@@ -1,0 +1,40 @@
+body{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+button{
+    display:flex;
+    flex-grow: 1;
+}
+
+.libraryCollection{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding:10px;
+    background-color:azure;
+    gap:20px;
+}
+
+.displayBook{
+    padding:30px;
+    background-color: aliceblue;
+    border: 2px solid black;
+    border-radius: 25px;
+}
+
+.displayInfo{
+    width: 120px;
+    padding:30px;
+    background-color:antiquewhite;
+    overflow:hidden;
+}
+
+.displayOption{
+    display:flex;
+    padding:30px;
+    background-color:aquamarine;
+}
